@@ -14,7 +14,7 @@ public class SpringBootDebutantApplication {
         SpringApplication.run(SpringBootDebutantApplication.class, args);
 
 
-        ogger.info("Configuration initial de mon projet Spring Boot");
+        logger.info("Configuration initial de mon projet Spring Boot");
 
 
     }
