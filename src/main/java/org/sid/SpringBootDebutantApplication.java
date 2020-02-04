@@ -16,7 +16,6 @@ public class SpringBootDebutantApplication {
 
         logger.info("Configuration initial de mon projet Spring Boot");
 
-
     }
 
 }
