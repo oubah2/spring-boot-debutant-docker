@@ -10,10 +10,11 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /**
- * User service pour gérer les users et ses rôles
+ * User service pour gerer les users et ses roles
  */
 @Service
 @Transactional
@@ -35,13 +36,15 @@ public class UserServiceImpl implements UserService {
 
         Optional<AppUser> user = findUserByName(userForm.getUserName());
 
-        if (user != null) throw new RuntimeException("User Exciste");
+        if (user.isPresent()) throw new RuntimeException("User Exciste");
         if (!userForm.getPassWord().equals(userForm.getPassWordConfirmed()))
             throw new RuntimeException("passWord nN Confirmed");
         AppUser appUser = new AppUser();
         appUser.setPassWord(bCryptPasswordEncoder.encode(userForm.getPassWord()));
-        appUser.setUserName(userForm.getPassWordConfirmed());
+        appUser.setUserName(userForm.getUserName());
         appUser.setActived(true);
+        appUser.setId(userForm.getId());
+
 
         AppRole roleUser = new AppRole();
         roleUser.setId(1L);
@@ -125,4 +128,56 @@ public class UserServiceImpl implements UserService {
     public List<AppUser> findAllUsers() {
         return listUser;
     }
+
+    /**
+     * find user by id
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Optional<AppUser> findUserByID(long id) {
+
+        return listUser.stream().filter(s -> s.getId().equals(id)).findFirst();
+    }
+
+    /**
+     * UPDATE USER
+     *
+     * @param id
+     * @param userForm
+     * @return
+     */
+    @Override
+    public Optional<AppUser> updateUser(long id, UserForm userForm) {
+        Optional<AppUser> userModified = findUserByID(id);
+        if (userModified.isPresent()) {
+            if (userForm.getUserName() != null && !userForm.getUserName().isEmpty()) {
+                userModified.get().setUserName(userForm.getUserName());
+            }
+
+            if (userForm.getPassWord() != null && userForm.getPassWordConfirmed() != null) {
+                if (!userForm.getPassWord().equals(userForm.getPassWordConfirmed())) {
+                    throw new RuntimeException("passWord no Confirmed");
+                } else {
+                    userModified.get().setPassWord((bCryptPasswordEncoder.encode(userForm.getPassWord())));
+                }
+
+            }
+            return userModified;
+        }
+
+        return Optional.empty();
+
+
+    }
+
+    @Override
+    public List<AppUser> deleteUser(long id) {
+        Optional<AppUser> userDelete = findUserByID(id);
+        if (!userDelete.isPresent()) throw new RuntimeException("USER Inconnu");
+        listUser.remove(userDelete.get());
+        return listUser;
+    }
 }
+

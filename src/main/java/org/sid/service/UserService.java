@@ -16,4 +16,10 @@ public interface UserService {
     public List<AppUser> initData();
 
     public List<AppUser> findAllUsers();
+
+    public Optional<AppUser> findUserByID(long id);
+
+    public Optional<AppUser> updateUser(long id, UserForm userForm);
+
+    public List<AppUser> deleteUser(long id);
 }

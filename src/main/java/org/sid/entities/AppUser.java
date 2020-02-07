@@ -1,12 +1,9 @@
 package org.sid.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString*/
+
 public class AppUser {
 
     /*    @Id
@@ -31,10 +29,11 @@ public class AppUser {
         return id;
     }
 
+
     public String getUserName() {
         return userName;
     }
-
+    @JsonIgnore
     public String getPassWord() {
         return passWord;
     }
@@ -54,10 +53,11 @@ public class AppUser {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
+    @JsonProperty
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
+
 
     public void setActived(boolean actived) {
         this.actived = actived;
