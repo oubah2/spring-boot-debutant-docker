@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/register/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/deleteUser/{id}").hasAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
